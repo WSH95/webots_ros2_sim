@@ -1,0 +1,11 @@
+Webots Proto Cache File version 1.5
+protoFileHash: db66aaf19352bec854cbca076daf4327
+needsRobotAncestor: 1
+baseType: Robot
+slotType: 
+parameters: translation,rotation,name,controller,controllerArgs,customData,supervisor,synchronization,selfCollision
+tags: 
+license:  Apache License 2.0
+licenseUrl:  http://www.apache.org/licenses/LICENSE-2.0
+documentationUrl: 
+info: This\sis\sa\sproto\sfile\sfor\sWebots\sfor\sthe\sunitree_a1_2\nExtracted\sfrom:\s/tmp/tmp3ox8rqmb.urdf
