@@ -1,0 +1,102 @@
+<?xml version="1.0" ?>
+<robot name="unitree_a1">
+    <webots>
+        <plugin type="webots_ros2_driver::Ros2IMU">
+            <enabled>true</enabled>
+            <updateRate>1000</updateRate>
+            <topicName>/imu</topicName>
+            <alwaysOn>true</alwaysOn>
+            <frameName>imu_link</frameName>
+            <inertialUnitName>trunk_imu inertial</inertialUnitName>
+            <gyroName>trunk_imu gyro</gyroName>
+            <accelerometerName>trunk_imu accelerometer</accelerometerName>
+        </plugin>
+
+        <plugin type="webots_ros2_control::Ros2Control" />
+
+        <!-- type="package_name.file_name.class_name" -->
+    </webots>
+
+    <ros2_control name="WebotsControl" type="system">
+        <hardware>
+            <plugin>webots_ros2_control::Ros2ControlSystem</plugin>
+        </hardware>
+
+        <joint name="FR_hip_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+        <joint name="FR_thigh_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+        <joint name="FR_calf_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+
+        <joint name="FL_hip_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+        <joint name="FL_thigh_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+        <joint name="FL_calf_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+
+        <joint name="RR_hip_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+        <joint name="RR_thigh_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+        <joint name="RR_calf_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+
+        <joint name="RL_hip_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+        <joint name="RL_thigh_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+        <joint name="RL_calf_joint">
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+            <state_interface name="effort"/>
+            <command_interface name="effort"/>
+        </joint>
+
+    </ros2_control>
+</robot>

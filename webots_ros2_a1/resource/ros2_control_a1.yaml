@@ -1,0 +1,7 @@
+controller_manager:
+  ros__parameters:
+    # controller_manager
+    update_rate: 1000
+    a1_joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
