@@ -1,4 +1,0 @@
-[submodule "joint_state_publisher"]
-	path = joint_state_publisher
-	url = https://github.com/ros/joint_state_publisher.git
-	branch = ros2
