@@ -1,7 +1,26 @@
-controller_manager:
+/**:
   ros__parameters:
     # controller_manager
     update_rate: 1000
+    # a1_effort_controllers:
+    #   type: effort_controllers/JointGroupEffortController
     a1_joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
+    
+    # a1_effort_controllers
+    # joints:
+    #   - FR_hip_joint
+    #   - FR_thigh_joint
+    #   - FR_calf_joint
+    #   - FL_hip_joint
+    #   - FL_thigh_joint
+    #   - FL_calf_joint
+    #   - RR_hip_joint
+    #   - RR_thigh_joint
+    #   - RR_calf_joint
+    #   - RL_hip_joint
+    #   - RL_thigh_joint
+    #   - RL_calf_joint
+    
+    # interface_name: effort
 

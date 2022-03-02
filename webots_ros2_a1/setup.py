@@ -34,6 +34,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'a1_driver = webots_ros2_a1.a1_driver:main'
         ],
+        'launch.frontend.launch_extension': ['launch_ros = launch_ros']
     },
 )
