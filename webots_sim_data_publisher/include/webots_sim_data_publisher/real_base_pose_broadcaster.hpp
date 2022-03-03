@@ -12,6 +12,10 @@ namespace webots_sim_data_publisher
     public:
         void init(webots_ros2_driver::WebotsNode *node, std::unordered_map<std::string, std::string> &parameters) override;
         void step() override;
+
+    private:
+        webots_ros2_driver::WebotsNode *mNode;
+        webots::Supervisor *mRobot;
     };
 }
 

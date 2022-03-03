@@ -3,7 +3,7 @@ import os
 import pathlib
 
 from sympy import N
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import Command, LaunchConfiguration
 from launch.actions import DeclareLaunchArgument, LogInfo, TimerAction
 from launch.substitutions.path_join_substitution import PathJoinSubstitution
 from launch import LaunchDescription
@@ -30,6 +30,18 @@ def generate_launch_description():
     a1_description_package_dir = get_package_share_directory('a1_description')
     default_rviz_config_path = os.path.join(
         a1_description_package_dir, 'rviz/unitree_a1_sim_show.rviz')
+    # a1_description_urdf_path = os.path.join(
+    #     a1_description_package_dir, 'urdf/robot_cut_description.urdf')
+    
+    a1_description_xacro_path = os.path.join(
+        a1_description_package_dir, 'xacro/robot_cut.xacro')
+    
+    # with open(a1_description_urdf_path, 'r') as f:
+    #     a1_description = f.read()
+    
+    # print("a1_description:*****************************************************************************************")
+    # print(a1_description)
+
     declare_use_rviz_cmd = DeclareLaunchArgument(
         name='use_rviz',
         default_value='True',
@@ -76,21 +88,22 @@ def generate_launch_description():
         arguments=['a1_joint_state_broadcaster'] + controller_manager_timeout,
     )
 
+    base_link_publisher = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        output='screen',
+        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'base'],
+    )
+
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='screen',
         parameters=[{
-            'robot_description': '<robot name=""><link name=""/></robot>',
-            'publish_frequency': 30.0,
+            'use_sim_time': use_sim_time,
+            'robot_description': Command(['xacro ', a1_description_xacro_path]),
+            # 'publish_frequency': 30.0,
         }],
-    )
-
-    base_link_publisher = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        output='screen',
-        arguments=['0', '0', '1', '0', '0', '0', 'base', 'base_link'],
     )
 
     # Launch RViz
@@ -111,28 +124,32 @@ def generate_launch_description():
             on_start=[
                 LogInfo(msg='a1_robot_driver start'),
                 TimerAction(
-                    period=2.0,
-                    actions=[start_rviz_cmd]
+                    period=5.0,
+                    actions=[start_rviz_cmd, robot_state_publisher]
                 )
             ],
         )
     )
 
+    
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'world',
-            default_value='unitree_a1.wbt',
+            default_value='unitree_a1_cut.wbt',
             description='Choose one of the world files from `/webots_ros2_a1/world` directory'
         ),
         declare_use_rviz_cmd,
         declare_rviz_config_file_cmd,
         webots,
         a1_robot_driver,
-        # a1_effort_controllers_spawner,
+        # start_rviz_cmd,
+        # # a1_effort_controllers_spawner,
+        # robot_state_publisher,
+        
         joint_state_broadcaster_spawner,
-        robot_state_publisher,
-        base_link_publisher,
         start_rviz,
+        # base_link_publisher,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,

@@ -1,0 +1,9 @@
+<library path="webots_sim_data_publisher">
+    <!-- The `type` attribute is a reference to the plugin class. -->
+    <!-- The `base_class_type` attribute is always `webots_ros2_driver::PluginInterface`. -->
+    <class type="webots_sim_data_publisher::WebotsBasePoseBroadcaster" base_class_type="webots_ros2_driver::PluginInterface">
+        <description>
+            Publish the idel data in simulation.
+        </description>
+    </class>
+</library>

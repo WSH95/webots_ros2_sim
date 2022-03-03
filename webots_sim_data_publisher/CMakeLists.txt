@@ -12,7 +12,7 @@ if(NOT CMAKE_CXX_STANDARD)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
+  add_compile_options(-Wall -Wextra -Wpedantic -Wno-unused-parameter)
 endif()
 
 # find dependencies
@@ -24,6 +24,34 @@ find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(webots_ros2_driver REQUIRED)
 
+include_directories(include/webots_sim_data_publisher)
+
+add_library(
+  ${PROJECT_NAME}
+  SHARED
+  src/real_base_pose_broadcaster.cpp
+)
+target_include_directories(${PROJECT_NAME} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+ament_target_dependencies(
+  ${PROJECT_NAME}
+  pluginlib
+  rclcpp
+  webots_ros2_driver
+)
+
+install(TARGETS
+  ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+# Export the plugin configuration file
+pluginlib_export_plugin_description_file(webots_ros2_driver webots_sim_data_publisher.xml)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
@@ -34,5 +62,12 @@ if(BUILD_TESTING)
   #set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+ament_export_include_directories(
+  include
+)
+ament_export_libraries(
+  ${PROJECT_NAME}
+)
 
 ament_package()
