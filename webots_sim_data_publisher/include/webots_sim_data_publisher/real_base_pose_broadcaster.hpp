@@ -4,6 +4,10 @@
 #include "rclcpp/macros.hpp"
 #include "webots_ros2_driver/PluginInterface.hpp"
 #include "webots_ros2_driver/WebotsNode.hpp"
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/transform_broadcaster.h>
+#include <geometry_msgs/msg/pose.hpp>
 
 namespace webots_sim_data_publisher
 {
@@ -14,8 +18,13 @@ namespace webots_sim_data_publisher
         void step() override;
 
     private:
-        webots_ros2_driver::WebotsNode *mNode;
-        webots::Supervisor *mRobot;
+        webots_ros2_driver::WebotsNode *mNode_;
+        webots::Supervisor *mRobot_;
+        webots::Node *baseNode_;
+        rclcpp::Publisher<geometry_msgs::msg::Pose>::SharedPtr publisher_{nullptr};
+        std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
+        geometry_msgs::msg::TransformStamped transformStamped_;
+        geometry_msgs::msg::Pose base_pose_;
     };
 }
 

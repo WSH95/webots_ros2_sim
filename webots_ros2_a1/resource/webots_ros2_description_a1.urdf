@@ -24,8 +24,8 @@
 
         <plugin type="webots_ros2_control::Ros2Control" />
 
-        <!-- <plugin type="webots_ros2_a1.a1_driver.A1Driver" /> -->
-        <plugin type="webots_sim_data_publisher::WebotsBasePoseBroadcaster" />
+        <plugin type="webots_ros2_a1.a1_driver.A1Driver" />
+        <!-- <plugin type="webots_sim_data_publisher::WebotsBasePoseBroadcaster" /> -->
 
         <!-- type="package_name.file_name.class_name" -->
     </webots>

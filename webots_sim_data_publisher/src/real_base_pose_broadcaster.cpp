@@ -4,11 +4,17 @@ namespace webots_sim_data_publisher
 {
     void WebotsBasePoseBroadcaster::init(webots_ros2_driver::WebotsNode *node, std::unordered_map<std::string, std::string> &parameters)
     {
-        mNode = node;
+        mNode_ = node;
+        mRobot_ = mNode_->robot();
+        baseNode_ = mRobot_->getFromDef("ROBOT");
     }
 
     void WebotsBasePoseBroadcaster::step()
     {
+        auto tmp_position_matrix = baseNode_->getPosition();
+        std::cout << tmp_position_matrix[0] << ' ' << tmp_position_matrix[1] << ' ' << tmp_position_matrix[2] << std::endl;
+        auto tmp_orientation_matrix = baseNode_->getOrientation();
+        tf2::Quaternion q;
 
     }
 }
