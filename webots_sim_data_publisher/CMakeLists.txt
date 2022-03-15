@@ -23,6 +23,8 @@ find_package(geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(webots_ros2_driver REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
 
 include_directories(include/webots_sim_data_publisher)
 
@@ -30,6 +32,7 @@ add_library(
   ${PROJECT_NAME}
   SHARED
   src/real_base_pose_broadcaster.cpp
+  src/webots_foot_contact_publisher.cpp
 )
 target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -39,7 +42,12 @@ ament_target_dependencies(
   ${PROJECT_NAME}
   pluginlib
   rclcpp
+  geometry_msgs
+  tf2
+  tf2_ros
   webots_ros2_driver
+  std_msgs
+  visualization_msgs
 )
 
 install(TARGETS

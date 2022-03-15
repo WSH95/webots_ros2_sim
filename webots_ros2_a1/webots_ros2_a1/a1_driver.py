@@ -1,16 +1,18 @@
 import rclpy
 from rclpy.time import Time
 from std_msgs.msg import Float64
-from geometry_msgs.msg import Pose, TransformStamped
+from geometry_msgs.msg import Pose, TransformStamped, PoseWithCovarianceStamped
 from tf2_ros import TransformBroadcaster
 import tf_transformations
 from std_msgs.msg import Float32
 import numpy as np
+from rclpy.parameter import Parameter
+
 
 class A1Driver:
-    def init(self, webots_node, properties):
+    def init(self, webots_node, properties): 
         self.__robot = webots_node.robot
-        
+
         self.__robot_node = self.__robot.getFromDef("ROBOT")
         # self.__timestep = int(self.__robot.getBasicTimeStep())
 
@@ -19,11 +21,15 @@ class A1Driver:
         # ROS interface
         rclpy.init(args=None)
         self.__node = rclpy.create_node('a1_driver')
-        self.__publisher = self.__node.create_publisher(Pose, 'sim_body_pose', 1)
+        self.__publisher = self.__node.create_publisher(
+            Pose, 'sim_body_pose', 1)
+        self.__publisher_estimate_pose = self.__node.create_publisher(
+            PoseWithCovarianceStamped, 'estimate_body_pose', 1)
+        self.estimate_body_pose = PoseWithCovarianceStamped()
 
         # Initialize the transform broadcaster
         self.br = TransformBroadcaster(self.__node)
-    
+
     def step(self):
         # print(f"self.__robot: {self.__robot}")
         # print(f"self.__robot_node: {self.__robot_node}")
@@ -34,13 +40,14 @@ class A1Driver:
         self.body_pose.position.y = tmp_body_pose_matrix[7]
         self.body_pose.position.z = tmp_body_pose_matrix[11]
 
-        tmp_body_orientation_quaternion = tf_transformations.quaternion_from_matrix(np.resize(np.array([tmp_body_pose_matrix]), (4, 4)))
+        tmp_body_orientation_quaternion = tf_transformations.quaternion_from_matrix(
+            np.resize(np.array([tmp_body_pose_matrix]), (4, 4)))
         # print(tmp_body_orientation_quaternion)
         self.body_pose.orientation.x = tmp_body_orientation_quaternion[0]
         self.body_pose.orientation.y = tmp_body_orientation_quaternion[1]
         self.body_pose.orientation.z = tmp_body_orientation_quaternion[2]
         self.body_pose.orientation.w = tmp_body_orientation_quaternion[3]
-        
+
         self.__publisher.publish(self.body_pose)
 
         t = TransformStamped()
@@ -57,3 +64,10 @@ class A1Driver:
 
         # Send the transformation
         self.br.sendTransform(t)
+
+        # publish estimate body pose
+        self.estimate_body_pose.header.stamp = Time(seconds=self.__robot.getTime()).to_msg()
+        self.estimate_body_pose.header.frame_id = 'world'
+        self.estimate_body_pose.pose.pose = self.body_pose
+        self.estimate_body_pose.pose.covariance = [0.0] * 36
+        self.__publisher_estimate_pose.publish(self.estimate_body_pose)

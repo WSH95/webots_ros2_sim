@@ -51,6 +51,12 @@ def generate_launch_description():
         name='rviz_config_file',
         default_value=default_rviz_config_path,
         description='Full path to the RVIZ config file to use')
+    
+    declare_use_sim_time = DeclareLaunchArgument(
+        name='use_sim_time',
+        default_value='True',
+        description='Whether to use sim time'
+    )
 
     webots = WebotsLauncher(
         world=PathJoinSubstitution([package_dir, 'worlds', world]), mode='fast'
@@ -72,13 +78,13 @@ def generate_launch_description():
     controller_manager_timeout = ['--controller-manager-timeout', '50']
     controller_manager_prefix = 'python.exe' if os.name == 'nt' else ''
 
-    # a1_effort_controllers_spawner = Node(
-    #     package='controller_manager',
-    #     executable='spawner.py',
-    #     output='screen',
-    #     prefix=controller_manager_prefix,
-    #     arguments=['a1_effort_controllers'] + controller_manager_timeout,
-    # )
+    a1_effort_controllers_spawner = Node(
+        package='controller_manager',
+        executable='spawner.py',
+        output='screen',
+        prefix=controller_manager_prefix,
+        arguments=['a1_effort_controllers'] + controller_manager_timeout,
+    )
 
     joint_state_broadcaster_spawner = Node(
         package='controller_manager',
@@ -88,11 +94,18 @@ def generate_launch_description():
         arguments=['a1_joint_state_broadcaster'] + controller_manager_timeout,
     )
 
-    base_link_publisher = Node(
+    camera_tf_publisher = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
         output='screen',
-        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'base'],
+        arguments=['0.2633438', '0', '0.0301362', '0', '0.2618', '0', 'trunk', 'range-finder'],
+    )
+
+    lidar_tf_publisher = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        output='screen',
+        arguments=['0', '0', '0.176', '0', '0', '0', 'trunk', 'lidar16'],
     )
 
     robot_state_publisher = Node(
@@ -131,6 +144,20 @@ def generate_launch_description():
         )
     )
 
+    # delay_joint_state_broadcaster_start = launch.actions.RegisterEventHandler(
+    #     event_handler=launch.event_handlers.OnProcessExit(
+    #         target_action=a1_robot_driver,
+    #         on_exit=[joint_state_broadcaster_spawner]
+    #     )
+    # )
+
+    # delay_rviz_start = launch.actions.RegisterEventHandler(
+    #     event_handler=launch.event_handlers.OnProcessExit(
+    #         target_action=joint_state_broadcaster_spawner,
+    #         on_exit=[start_rviz_cmd]
+    #     )
+    # )
+
     
 
     return LaunchDescription([
@@ -148,8 +175,10 @@ def generate_launch_description():
         # robot_state_publisher,
         
         joint_state_broadcaster_spawner,
+        a1_effort_controllers_spawner,
         start_rviz,
-        # base_link_publisher,
+        camera_tf_publisher,
+        lidar_tf_publisher,
         launch.actions.RegisterEventHandler(
             event_handler=launch.event_handlers.OnProcessExit(
                 target_action=webots,

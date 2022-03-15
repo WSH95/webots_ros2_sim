@@ -3,7 +3,13 @@
     <!-- The `base_class_type` attribute is always `webots_ros2_driver::PluginInterface`. -->
     <class type="webots_sim_data_publisher::WebotsBasePoseBroadcaster" base_class_type="webots_ros2_driver::PluginInterface">
         <description>
-            Publish the idel data in simulation.
+            Publish the idel body pose data in simulation.
+        </description>
+    </class>
+
+    <class type="webots_sim_data_publisher::WebotsFootContactPublisher" base_class_type="webots_ros2_driver::PluginInterface">
+        <description>
+            Publish the foot force data in simulation.
         </description>
     </class>
 </library>

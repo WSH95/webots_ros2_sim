@@ -3,17 +3,27 @@
     <webots>
         <device reference="range-finder" type="Lidar">
             <ros>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
                 <updateRate>60</updateRate>
-                <topicName>~/deep_camera</topicName>
+                <topicName>/camera/deep/points</topicName>
                 <alwaysOn>true</alwaysOn>
                 <frameName>range-finder</frameName>
             </ros>
         </device>
 
+        <device reference="velodyn-16" type="Lidar">
+            <ros>
+                <enabled>false</enabled>
+                <updateRate>10</updateRate>
+                <topicName>/lidar16/points</topicName>
+                <alwaysOn>true</alwaysOn>
+                <frameName>lidar16</frameName>
+            </ros>
+        </device>
+
         <plugin type="webots_ros2_driver::Ros2IMU">
             <enabled>true</enabled>
-            <updateRate>1000</updateRate>
+            <updateRate>400</updateRate>
             <topicName>~/imu</topicName>
             <alwaysOn>true</alwaysOn>
             <frameName>imu_link</frameName>
@@ -25,7 +35,18 @@
         <plugin type="webots_ros2_control::Ros2Control" />
 
         <plugin type="webots_ros2_a1.a1_driver.A1Driver" />
-        <!-- <plugin type="webots_sim_data_publisher::WebotsBasePoseBroadcaster" /> -->
+
+        <plugin type="webots_sim_data_publisher::WebotsFootContactPublisher">
+            <enabled>true</enabled>
+            <updateRate>1000</updateRate>
+            <topicName>~/foot_force</topicName>
+            <alwaysOn>false</alwaysOn>
+            <touchSensorName>FR_foot FL_foot RR_foot RL_foot</touchSensorName>
+            <touchSensorFrameName>FR_foot FL_foot RR_foot RL_foot</touchSensorFrameName>
+        </plugin>
+
+        <!-- <plugin type="webots_sim_data_publisher::WebotsBasePoseBroadcaster" />
+ -->
 
         <!-- type="package_name.file_name.class_name" -->
     </webots>
