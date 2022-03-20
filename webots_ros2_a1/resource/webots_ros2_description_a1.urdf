@@ -6,7 +6,7 @@
                 <enabled>false</enabled>
                 <updateRate>60</updateRate>
                 <topicName>/camera/deep/points</topicName>
-                <alwaysOn>true</alwaysOn>
+                <alwaysOn>false</alwaysOn>
                 <frameName>range-finder</frameName>
             </ros>
         </device>
@@ -16,7 +16,7 @@
                 <enabled>false</enabled>
                 <updateRate>10</updateRate>
                 <topicName>/lidar16/points</topicName>
-                <alwaysOn>true</alwaysOn>
+                <alwaysOn>false</alwaysOn>
                 <frameName>lidar16</frameName>
             </ros>
         </device>
@@ -24,7 +24,7 @@
         <plugin type="webots_ros2_driver::Ros2IMU">
             <enabled>true</enabled>
             <updateRate>400</updateRate>
-            <topicName>~/imu</topicName>
+            <topicName>/robot/imu</topicName>
             <alwaysOn>true</alwaysOn>
             <frameName>imu_link</frameName>
             <inertialUnitName>trunk_imu inertial</inertialUnitName>
@@ -39,8 +39,8 @@
         <plugin type="webots_sim_data_publisher::WebotsFootContactPublisher">
             <enabled>true</enabled>
             <updateRate>1000</updateRate>
-            <topicName>~/foot_force</topicName>
-            <alwaysOn>false</alwaysOn>
+            <topicName>/foot_force</topicName>
+            <alwaysOn>true</alwaysOn>
             <touchSensorName>FR_foot FL_foot RR_foot RL_foot</touchSensorName>
             <touchSensorFrameName>FR_foot FL_foot RR_foot RL_foot</touchSensorFrameName>
         </plugin>

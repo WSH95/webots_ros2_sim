@@ -2,7 +2,7 @@
   ros__parameters:
     # controller_manager
     update_rate: 1000
-    a1_effort_controllers:
+    joint_effort_controllers:
       type: effort_controllers/JointGroupEffortController
     a1_joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster

@@ -83,7 +83,7 @@ def generate_launch_description():
         executable='spawner.py',
         output='screen',
         prefix=controller_manager_prefix,
-        arguments=['a1_effort_controllers'] + controller_manager_timeout,
+        arguments=['joint_effort_controllers'] + controller_manager_timeout,
     )
 
     joint_state_broadcaster_spawner = Node(
@@ -168,6 +168,7 @@ def generate_launch_description():
         ),
         declare_use_rviz_cmd,
         declare_rviz_config_file_cmd,
+        declare_use_sim_time,
         webots,
         a1_robot_driver,
         # start_rviz_cmd,
