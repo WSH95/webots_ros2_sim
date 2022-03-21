@@ -13,7 +13,7 @@
 
         <device reference="velodyn-16" type="Lidar">
             <ros>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
                 <updateRate>10</updateRate>
                 <topicName>/lidar16/points</topicName>
                 <alwaysOn>false</alwaysOn>
