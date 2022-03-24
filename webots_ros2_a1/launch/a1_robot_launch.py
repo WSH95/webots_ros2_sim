@@ -2,7 +2,6 @@ from http.server import executable
 import os
 import pathlib
 
-from sympy import N
 from launch.substitutions import Command, LaunchConfiguration
 from launch.actions import DeclareLaunchArgument, LogInfo, TimerAction
 from launch.substitutions.path_join_substitution import PathJoinSubstitution
