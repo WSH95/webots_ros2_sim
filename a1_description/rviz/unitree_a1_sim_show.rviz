@@ -8,6 +8,7 @@ Panels:
         - /Status1
         - /RobotModel1/Description Topic1
         - /TF1/Tree1
+        - /PointCloud22
       Splitter Ratio: 0.4108658730983734
     Tree Height: 791
   - Class: rviz_common/Selection
@@ -70,7 +71,6 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         FL_hip:
           Alpha: 1
           Show Axes: false
@@ -95,7 +95,6 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         FR_hip:
           Alpha: 1
           Show Axes: false
@@ -121,7 +120,6 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         RL_hip:
           Alpha: 1
           Show Axes: false
@@ -146,7 +144,6 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         RR_hip:
           Alpha: 1
           Show Axes: false
@@ -162,12 +159,35 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         imu_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        trunk:
+        range-finder:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        trunk_imu accelerometer:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        trunk_imu compass:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        trunk_imu gyro:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        trunk_imu inertial:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        velodyn-16:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -241,8 +261,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.2105918973684311
-        Min Value: -0.5415910482406616
+        Max Value: 12.08405590057373
+        Min Value: -0.034007251262664795
         Value: true
       Axis: Z
       Channel Name: z
@@ -267,7 +287,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /lidar16/points/point_cloud
+        Value: /velodyne_points
       Use Fixed Frame: true
       Use rainbow: true
       Value: true

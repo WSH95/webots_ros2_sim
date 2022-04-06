@@ -31,7 +31,7 @@ namespace webots_ros2_driver
     // Laser publisher
     if (mLidar->getNumberOfLayers() == 1)
     {
-      mLaserPublisher = mNode->create_publisher<sensor_msgs::msg::LaserScan>(mTopicName, rclcpp::SensorDataQoS().reliable());
+      mLaserPublisher = mNode->create_publisher<sensor_msgs::msg::LaserScan>(mTopicName + "laser_scan", rclcpp::SensorDataQoS().reliable());
       const int resolution = mLidar->getHorizontalResolution();
       mLaserMessage.header.frame_id = mFrameName;
       mLaserMessage.angle_increment = -mLidar->getFov() / resolution;
@@ -45,7 +45,7 @@ namespace webots_ros2_driver
     }
 
     // Point cloud publisher
-    mPointCloudPublisher = mNode->create_publisher<sensor_msgs::msg::PointCloud2>(mTopicName + "/point_cloud", rclcpp::SensorDataQoS().reliable());
+    mPointCloudPublisher = mNode->create_publisher<sensor_msgs::msg::PointCloud2>(mTopicName, rclcpp::SensorDataQoS().reliable());
     mPointCloudMessage.header.frame_id = mFrameName;
     mPointCloudMessage.height = 1;
     mPointCloudMessage.point_step = 20;
@@ -78,8 +78,8 @@ namespace webots_ros2_driver
     if (!preStep())
       return;
 
-    if (mIsSensorEnabled && mLaserPublisher != nullptr)
-      publishLaserScan();
+    // if (mIsSensorEnabled && mLaserPublisher != nullptr)
+    //   publishLaserScan();
 
     if (mIsPointCloudEnabled)
       publishPointCloud();

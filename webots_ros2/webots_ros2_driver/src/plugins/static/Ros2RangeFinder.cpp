@@ -103,7 +103,7 @@ namespace webots_ros2_driver
 
     if (mIsEnabled)
     {
-      publishImage();
+      // publishImage();
       publishPointCloud();
     }
 

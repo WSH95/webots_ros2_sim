@@ -28,7 +28,7 @@ namespace webots_sim_data_publisher
             touchSensorList.push_back(tmpTouchSensor);
         }
 
-        mForceMagnitudePublisher = mNode->create_publisher<std_msgs::msg::Int16MultiArray>(mTopicName + "/force_magnitude", rclcpp::SensorDataQoS().reliable());
+        mForceMagnitudePublisher = mNode->create_publisher<std_msgs::msg::Float32MultiArray>(mTopicName + "/force_magnitude", rclcpp::SensorDataQoS().reliable());
 
         mForceVisualPublisher = mNode->create_publisher<visualization_msgs::msg::MarkerArray>(mTopicName + "/force_vector_visual", rclcpp::SensorDataQoS().reliable());
         mForceVisualMessage.markers.resize(num_touchSensor);
@@ -118,7 +118,7 @@ namespace webots_sim_data_publisher
 
     void WebotsFootContactPublisher::publishForceMagnitude()
     {
-        mForceMagnitudeMessage = std_msgs::msg::Int16MultiArray();
+        mForceMagnitudeMessage = std_msgs::msg::Float32MultiArray();
         for (auto &&forces : tmpForceList)
         {
             auto force_magnitude = sqrt(forces[0] * forces[0] + forces[1] * forces[1] + forces[2] * forces[2]);

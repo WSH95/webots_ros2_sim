@@ -5,7 +5,7 @@
 #include <array>
 #include <webots_ros2_driver/plugins/Ros2SensorPlugin.hpp>
 #include <webots_ros2_driver/WebotsNode.hpp>
-#include <std_msgs/msg/int16_multi_array.hpp>
+#include <std_msgs/msg/float32_multi_array.hpp>>
 #include <webots/TouchSensor.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
 
@@ -29,8 +29,8 @@ namespace webots_sim_data_publisher
         std::vector<std::string> touchSensorNameList;
         std::vector<std::string> touchSensorFrameList;
 
-        rclcpp::Publisher<std_msgs::msg::Int16MultiArray>::SharedPtr mForceMagnitudePublisher;
-        std_msgs::msg::Int16MultiArray mForceMagnitudeMessage;
+        rclcpp::Publisher<std_msgs::msg::Float32MultiArray>::SharedPtr mForceMagnitudePublisher;
+        std_msgs::msg::Float32MultiArray mForceMagnitudeMessage;
 
         rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr mForceVisualPublisher;
         visualization_msgs::msg::MarkerArray mForceVisualMessage;

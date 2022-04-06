@@ -104,7 +104,7 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         output='screen',
-        arguments=['0', '0', '0.176', '0', '0', '0', 'trunk', 'lidar16'],
+        arguments=['0', '0', '0.166', '0', '0', '0', 'trunk', 'lidar16'],
     )
 
     robot_state_publisher = Node(
@@ -136,7 +136,7 @@ def generate_launch_description():
             on_start=[
                 LogInfo(msg='a1_robot_driver start'),
                 TimerAction(
-                    period=5.0,
+                    period=15.0,
                     actions=[start_rviz_cmd, robot_state_publisher]
                 )
             ],

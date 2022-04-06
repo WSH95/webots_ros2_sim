@@ -4,7 +4,7 @@
         <device reference="range-finder" type="Lidar">
             <ros>
                 <enabled>false</enabled>
-                <updateRate>60</updateRate>
+                <updateRate>30</updateRate>
                 <topicName>/camera/deep/points</topicName>
                 <alwaysOn>false</alwaysOn>
                 <frameName>range-finder</frameName>
@@ -15,8 +15,8 @@
             <ros>
                 <enabled>true</enabled>
                 <updateRate>10</updateRate>
-                <topicName>/lidar16/points</topicName>
-                <alwaysOn>false</alwaysOn>
+                <topicName>/velodyne_points</topicName>
+                <alwaysOn>true</alwaysOn>
                 <frameName>lidar16</frameName>
             </ros>
         </device>
@@ -24,7 +24,7 @@
         <plugin type="webots_ros2_driver::Ros2IMU">
             <enabled>true</enabled>
             <updateRate>400</updateRate>
-            <topicName>/robot/imu</topicName>
+            <topicName>/imu/data</topicName>
             <alwaysOn>true</alwaysOn>
             <frameName>imu_link</frameName>
             <inertialUnitName>trunk_imu inertial</inertialUnitName>
