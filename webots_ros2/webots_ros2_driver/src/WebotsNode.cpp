@@ -32,6 +32,7 @@
 #include "webots_ros2_driver/PluginInterface.hpp"
 #include "webots_ros2_driver/PythonPlugin.hpp"
 
+
 namespace webots_ros2_driver
 {
   const char *gDeviceReferenceAttribute = "reference";
@@ -61,6 +62,8 @@ namespace webots_ros2_driver
     }
 
     mClockPublisher = create_publisher<rosgraph_msgs::msg::Clock>("/clock", 10);
+
+    tt.start();
   }
 
   std::unordered_map<std::string, std::string> WebotsNode::getPluginProperties(tinyxml2::XMLElement *pluginElement) const
@@ -113,11 +116,13 @@ namespace webots_ros2_driver
 
   void WebotsNode::init()
   {
+    /// wsh_annotation: publish robot_description
     if (mSetRobotStatePublisher)
       setAnotherNodeParameter("robot_state_publisher", "robot_description", mRobot->getUrdf());
 
     mStep = mRobot->getBasicTimeStep();
-    mTimer = this->create_wall_timer(std::chrono::milliseconds(1), std::bind(&WebotsNode::timerCallback, this));
+    // mTimer = this->create_wall_timer(std::chrono::milliseconds(1), std::bind(&WebotsNode::timerCallback, this));
+    mTimer = this->create_wall_timer(std::chrono::milliseconds(mStep), std::bind(&WebotsNode::timerCallback, this)); /// wsh_annotation: change 1 to mStep
 
     // Load static plugins
     // Static plugins are automatically configured based on the robot model.
@@ -216,16 +221,27 @@ namespace webots_ros2_driver
 
   void WebotsNode::timerCallback()
   {
-    if (mRobot->step(mStep) == -1) {
+    // tt_runtime.start();
+    if (mRobot->step(mStep) == -1) /// wsh_annotation: webots process one step
+    {
       mTimer->cancel();
       exit(0);
       return;
     }
+    // RCLCPP_INFO(rclcpp::get_logger("run time current step"), "\033[1;32m----> %f ms. %f ns.\033[0m", tt_runtime.getMs(), mRobot->getTime() * 1e9);
+// #pragma omp parallel for num_threads(4)
+    // tt.start();
+    // tt_runtime.start();
     for (std::shared_ptr<PluginInterface> plugin : mPlugins)
       plugin->step();
-
+    // RCLCPP_INFO(rclcpp::get_logger("run time current step"), "\033[1;32m----> %f ms. %f ns.\033[0m", tt_runtime.getMs(), mRobot->getTime() * 1e9);
+    // RCLCPP_INFO(rclcpp::get_logger("step duration"), "\033[1;32m----> %f ms.\033[0m", tt.getMs());
+    
     mClockMessage.clock = rclcpp::Time(mRobot->getTime() * 1e9);
     mClockPublisher->publish(mClockMessage);
+
+    // RCLCPP_INFO(rclcpp::get_logger("step duration"), "\033[1;32m----> %f ms.\033[0m", tt.getMs());
+    // tt.start();
   }
 
   void WebotsNode::setAnotherNodeParameter(std::string anotherNodeName, std::string parameterName, std::string parameterValue)

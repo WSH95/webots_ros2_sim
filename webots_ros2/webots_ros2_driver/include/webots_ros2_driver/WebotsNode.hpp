@@ -31,6 +31,8 @@
 
 #include "webots_ros2_driver/PluginInterface.hpp"
 
+#include "webots_ros2_driver/Timer.hpp"
+
 namespace webots_ros2_driver
 {
   class PluginInterface;
@@ -65,6 +67,8 @@ namespace webots_ros2_driver
 
     rclcpp::Publisher<rosgraph_msgs::msg::Clock>::SharedPtr mClockPublisher;
     rosgraph_msgs::msg::Clock mClockMessage;
+
+    Timer tt, tt_runtime;
   };
 
 } // end namespace webots_ros2_driver
