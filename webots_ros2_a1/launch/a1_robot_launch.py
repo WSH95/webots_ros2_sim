@@ -68,7 +68,7 @@ def generate_launch_description():
         parameters=[
             {'robot_description': robot_description,
              'use_sim_time': use_sim_time,
-             'set_robot_state_publisher': True},
+             'set_robot_state_publisher': False},
             ros2_control_params
         ],
     )
@@ -93,12 +93,12 @@ def generate_launch_description():
         arguments=['a1_joint_state_broadcaster'] + controller_manager_timeout,
     )
 
-    camera_tf_publisher = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        output='screen',
-        arguments=['0.2633438', '0', '0.0301362', '0', '0.2618', '0', 'trunk', 'range-finder'],
-    )
+    # camera_tf_publisher = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     output='screen',
+    #     arguments=['0.2633438', '0', '0.0301362', '0', '0.2618', '0', 'trunk', 'range-finder'],
+    # )
 
     lidar_tf_publisher = Node(
         package='tf2_ros',
@@ -114,7 +114,7 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': use_sim_time,
             'robot_description': Command(['xacro ', a1_description_xacro_path]),
-            # 'publish_frequency': 30.0,
+            'publish_frequency': 200.0,
         }],
     )
 
@@ -126,18 +126,19 @@ def generate_launch_description():
         ),
         launch_arguments={
             'use_rviz': use_rviz,
-            'rviz_config_file': rviz_config_file
+            'rviz_config_file': rviz_config_file,
+            'use_sim_time': use_sim_time
         }.items()
     )
 
     start_rviz = launch.actions.RegisterEventHandler(
         event_handler=launch.event_handlers.OnProcessStart(
-            target_action=a1_robot_driver,
+            target_action=robot_state_publisher,
             on_start=[
                 LogInfo(msg='a1_robot_driver start'),
                 TimerAction(
-                    period=15.0,
-                    actions=[start_rviz_cmd, robot_state_publisher]
+                    period=20.0,
+                    actions=[start_rviz_cmd]
                 )
             ],
         )
@@ -160,30 +161,31 @@ def generate_launch_description():
     
 
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'world',
-            default_value='unitree_a1_cut.wbt',
-            description='Choose one of the world files from `/webots_ros2_a1/world` directory'
-        ),
+        # DeclareLaunchArgument(
+        #     'world',
+        #     default_value='unitree_a1_cut.wbt',
+        #     description='Choose one of the world files from `/webots_ros2_a1/world` directory'
+        # ),
         declare_use_rviz_cmd,
         declare_rviz_config_file_cmd,
         declare_use_sim_time,
-        webots,
+        # webots,
         a1_robot_driver,
         # start_rviz_cmd,
         # # a1_effort_controllers_spawner,
-        # robot_state_publisher,
+        robot_state_publisher,
         
         joint_state_broadcaster_spawner,
         a1_effort_controllers_spawner,
         start_rviz,
-        camera_tf_publisher,
+        # start_webots,
+        # camera_tf_publisher,
         lidar_tf_publisher,
-        launch.actions.RegisterEventHandler(
-            event_handler=launch.event_handlers.OnProcessExit(
-                target_action=webots,
-                on_exit=[launch.actions.EmitEvent(
-                    event=launch.events.Shutdown())],
-            )
-        )
+        # launch.actions.RegisterEventHandler(
+        #     event_handler=launch.event_handlers.OnProcessExit(
+        #         target_action=webots,
+        #         on_exit=[launch.actions.EmitEvent(
+        #             event=launch.events.Shutdown())],
+        #     )
+        # )
     ])
