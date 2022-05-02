@@ -5,7 +5,7 @@
 #include <array>
 #include <webots_ros2_driver/plugins/Ros2SensorPlugin.hpp>
 #include <webots_ros2_driver/WebotsNode.hpp>
-#include <std_msgs/msg/float32_multi_array.hpp>>
+#include <std_msgs/msg/float32_multi_array.hpp>
 #include <webots/TouchSensor.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
 

@@ -3,10 +3,10 @@
     <webots>
         <device reference="range-finder" type="Lidar">
             <ros>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
                 <updateRate>30</updateRate>
                 <topicName>/camera/deep/points</topicName>
-                <alwaysOn>false</alwaysOn>
+                <alwaysOn>true</alwaysOn>
                 <frameName>range-finder</frameName>
             </ros>
         </device>
