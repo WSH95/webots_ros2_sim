@@ -47,6 +47,8 @@ namespace webots_ros2_driver
     sensor_msgs::msg::PointCloud2 mPointCloudMessage;
 
     bool mIsEnabled;
+
+    uint8_t *tmp;
   };
 
 }

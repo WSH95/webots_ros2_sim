@@ -87,7 +87,8 @@ namespace webots_ros2_driver
     mPointCloudMessage.height = height;
     mPointCloudMessage.point_step = 12;
     mPointCloudMessage.row_step = width * 12;
-    mPointCloudMessage.data.resize(width * 12 * height);
+    // mPointCloudMessage.data.resize(width * 12 * height);
+    mPointCloudMessage.data.reserve(width * 12 * height);
 
     if (mAlwaysOn)
     {
@@ -156,6 +157,9 @@ namespace webots_ros2_driver
       int idx;
       float x, y, z;
 
+      // std::fill(mPointCloudMessage.data.begin(), mPointCloudMessage.data.end(), 0);
+      mPointCloudMessage.data.clear();
+
       float *data = (float *)mPointCloudMessage.data.data();
       long point_index = 0;
       for (int j = 0; j < height; j++)
@@ -166,7 +170,8 @@ namespace webots_ros2_driver
           x = image[idx];
 
           /// wsh_annotation
-          if ((x >= min_range) && (x <= max_range-0.001))
+          // if ((x >= min_range + 1) && (x <= max_range-0.001))
+          if (x <= max_range - 0.001)
           {
             y = -(i - cx) * x / fx;
             z = -(j - cy) * x / fy;
@@ -174,13 +179,35 @@ namespace webots_ros2_driver
             // memcpy(data + idx * 3 + 1, &y, sizeof(float));
             // memcpy(data + idx * 3 + 2, &z, sizeof(float));
 
-            memcpy(data + point_index * 3, &x, sizeof(float));
-            memcpy(data + point_index * 3 + 1, &y, sizeof(float));
-            memcpy(data + point_index * 3 + 2, &z, sizeof(float));
+            // memcpy(data + point_index * 3, &x, sizeof(float));
+            // memcpy(data + point_index * 3 + 1, &y, sizeof(float));
+            // memcpy(data + point_index * 3 + 2, &z, sizeof(float));
+
+            tmp = (uint8_t *)(&x);
+            for (int i = 0; i < 4; i++)
+            {
+              mPointCloudMessage.data.push_back(tmp[i]);
+            }
+            tmp = (uint8_t *)(&y);
+            for (int i = 0; i < 4; i++)
+            {
+              mPointCloudMessage.data.push_back(tmp[i]);
+            }
+            tmp = (uint8_t *)(&z);
+            for (int i = 0; i < 4; i++)
+            {
+              mPointCloudMessage.data.push_back(tmp[i]);
+            }
+
             point_index++;
           }
         }
       }
+
+      mPointCloudMessage.width = mPointCloudMessage.data.size() / 12;
+      mPointCloudMessage.height = 1;
+      mPointCloudMessage.point_step = 12;
+      mPointCloudMessage.row_step = mPointCloudMessage.data.size();
       mPointCloudPublisher->publish(mPointCloudMessage);
     }
   }
