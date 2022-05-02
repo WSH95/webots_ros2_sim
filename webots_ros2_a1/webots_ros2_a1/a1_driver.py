@@ -68,7 +68,7 @@ class A1Driver:
         t.transform.rotation.w = self.body_pose.pose.pose.orientation.w
 
         # Send the transformation
-        self.br.sendTransform(t)
+        # self.br.sendTransform(t)
 
         # publish estimate body pose
         # self.estimate_body_pose.header.stamp = Time(seconds=self.__robot.getTime()).to_msg()
