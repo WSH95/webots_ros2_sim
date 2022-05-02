@@ -50,7 +50,7 @@ namespace webots_ros2_driver
     mPointCloudMessage.height = 1;
     mPointCloudMessage.point_step = 20;
     mPointCloudMessage.is_dense = false;
-    mPointCloudMessage.fields.resize(3);
+    mPointCloudMessage.fields.resize(4);
     mPointCloudMessage.fields[0].name = "x";
     mPointCloudMessage.fields[0].datatype = sensor_msgs::msg::PointField::FLOAT32;
     mPointCloudMessage.fields[0].count = 1;
@@ -63,6 +63,11 @@ namespace webots_ros2_driver
     mPointCloudMessage.fields[2].datatype = sensor_msgs::msg::PointField::FLOAT32;
     mPointCloudMessage.fields[2].count = 1;
     mPointCloudMessage.fields[2].offset = 8;
+    /// wsh_annotation: add 'intensity' field
+    mPointCloudMessage.fields[3].name = "intensity";
+    mPointCloudMessage.fields[3].datatype = sensor_msgs::msg::PointField::FLOAT32;
+    mPointCloudMessage.fields[3].count = 1;
+    mPointCloudMessage.fields[3].offset = 12;
     mPointCloudMessage.is_bigendian = false;
 
     if (mAlwaysOn) {
