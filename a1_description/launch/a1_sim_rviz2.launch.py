@@ -22,6 +22,7 @@ def generate_launch_description():
 
     rviz_config_file = LaunchConfiguration('rviz_config_file')
     use_rviz = LaunchConfiguration('use_rviz')
+    use_sim_time = LaunchConfiguration('use_sim_time', default=True)
 
     # Declare the launch arguments
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
@@ -33,6 +34,12 @@ def generate_launch_description():
         name='use_rviz',
         default_value='True',
         description='Whether to start RVIZ')
+    
+    declare_use_sim_time = DeclareLaunchArgument(
+        name='use_sim_time',
+        default_value='True',
+        description='Whether to use sim time'
+    )
 
     # Launch RViz
     start_rviz_cmd = Node(
@@ -41,11 +48,15 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen',
-        arguments=['-d', rviz_config_file]
+        arguments=['-d', rviz_config_file],
+        parameters=[
+            {'use_sim_time': use_sim_time,}
+        ],
     )
 
     return LaunchDescription([
         declare_rviz_config_file_cmd,
         declare_use_rviz_cmd,
+        declare_use_sim_time,
         start_rviz_cmd,
     ])
