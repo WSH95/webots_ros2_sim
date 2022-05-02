@@ -19,6 +19,12 @@ find_package(tinyxml2_vendor REQUIRED)
 find_package(TinyXML2 REQUIRED)
 find_package(PythonLibs 3.8 EXACT REQUIRED)
 
+# wsh_annotation: multi-processing
+find_package(OpenMP REQUIRED)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+
 if (UNIX AND NOT APPLE)
   set(WEBOTS_LIB_BASE webots/lib/linux-gnu)
 endif ()
@@ -197,6 +203,8 @@ else()
     PATTERN "*CppDriver*"
   )
 endif()
+
+target_compile_options(driver PRIVATE -mtune=native -fPIC -fopenmp -O3 -g -mno-avx2)
 
 # Prevent pluginlib from using boost
 target_compile_definitions(driver PUBLIC "PLUGINLIB__DISABLE_BOOST_FUNCTIONS")
