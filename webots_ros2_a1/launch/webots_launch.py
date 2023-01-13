@@ -5,6 +5,7 @@ from launch.substitutions.path_join_substitution import PathJoinSubstitution
 from ament_index_python.packages import get_package_share_directory
 from webots_ros2_driver.webots_launcher import WebotsLauncher
 from launch.substitutions import EnvironmentVariable
+# from webots_ros2_driver.webots_launcher import Ros2SupervisorLauncher
 
 
 def generate_launch_description():
@@ -19,6 +20,8 @@ def generate_launch_description():
         world=PathJoinSubstitution([package_dir, 'worlds', world]), mode='fast'
     )
 
+    # ros2_supervisor = Ros2SupervisorLauncher()
+
     return LaunchDescription([
         SetEnvironmentVariable('LD_LIBRARY_PATH', [EnvironmentVariable('WEBOTS_HOME'), '/lib/controller:', EnvironmentVariable('LD_LIBRARY_PATH')]),
         # ExecuteProcess(
@@ -26,4 +29,5 @@ def generate_launch_description():
         #     output='screen'),
         declare_world,
         webots,
+        # ros2_supervisor,
     ])

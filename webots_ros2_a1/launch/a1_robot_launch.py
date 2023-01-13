@@ -13,6 +13,7 @@ from webots_ros2_driver.webots_launcher import WebotsLauncher
 from launch.conditions import IfCondition
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+# from webots_ros2_driver.webots_launcher import Ros2SupervisorLauncher
 
 
 def generate_launch_description():
@@ -61,10 +62,13 @@ def generate_launch_description():
         world=PathJoinSubstitution([package_dir, 'worlds', world]), mode='fast'
     )
 
+    # ros2_supervisor = Ros2SupervisorLauncher()
+
     a1_robot_driver = Node(
         package='webots_ros2_driver',
         executable='driver',
         output='screen',
+        additional_env={'WEBOTS_CONTROLLER_URL': 'UnitreeA1'},
         parameters=[
             {'robot_description': robot_description,
              'use_sim_time': use_sim_time,
@@ -170,6 +174,7 @@ def generate_launch_description():
         declare_rviz_config_file_cmd,
         declare_use_sim_time,
         # webots,
+        # ros2_supervisor,
         a1_robot_driver,
         # start_rviz_cmd,
         # # a1_effort_controllers_spawner,
